@@ -4,7 +4,7 @@ import "./ExpenseForm.css";
 const ExpenseForm = () => {
   
     const [enteredTitle, setEnteredTitle] = useState('');
-    const [enteredAmount, setEnteredAmout] = useState('');
+    const [enteredAmount, setEnteredAmount] = useState('');
     const [enteredDate, setEnteredDate] = useState('');
 
     const submitHandler = (event) =>{
@@ -16,15 +16,19 @@ const ExpenseForm = () => {
             date: new Date(enteredDate)
         }
 
-        console.log(expenseData)
+        console.log(expenseData);
+
+        setEnteredTitle('');
+        setEnteredAmount('');
+        setEnteredDate('');
     }
 
     const titleChangeHandler = (event) => {
        setEnteredTitle(event.target.value)
     }
 
-    const amoutChangeHandler = (event) => {
-       setEnteredAmout(event.target.value);
+    const amountChangeHandler = (event) => {
+       setEnteredAmount(event.target.value);
     }
 
     const dateChangeHandler = (event) => {
@@ -38,13 +42,15 @@ const ExpenseForm = () => {
           <label htmlFor="">Title</label>
           <input 
             type="text" 
+            value={enteredTitle}
             onChange={titleChangeHandler} />
         </div>
         <div className="new-expense__control">
-          <label htmlFor="">Amout</label>
+          <label htmlFor="">Amount</label>
           <input 
             type="number"
-            onChange={amoutChangeHandler} 
+            value={enteredAmount}
+            onChange={amountChangeHandler} 
             min="0.01" 
             step="0.01" />
         </div>
@@ -52,6 +58,7 @@ const ExpenseForm = () => {
           <label htmlFor="">Date</label>
           <input 
             type="date" 
+            value={enteredDate}
             onChange={dateChangeHandler}
             min="2019-01-01" 
             max="2022-12-31" />
