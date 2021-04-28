@@ -6,37 +6,48 @@ import "./expenses.css";
 
 const Expenses = (props) => {
 
-  const [selectedYear, setSelectedYear] = useState('');
-  let printListOfExpenses = []
+  const [selectedYear, setSelectedYear] = useState('All_Years');
+  let filteredListOfExpenses = [];
+  let listOfExpenses = [];
 
   const changeSelectHandler = (selectedYear) => {
     console.log(`[Expenses Component]: variable from ExpensesFilter ${selectedYear}`);
     setSelectedYear(selectedYear);
   }
 
-  if(selectedYear !== ''){ //filter returns a new array
-    printListOfExpenses = props.listOfExpenses.filter(expense => {
+  if(selectedYear !== 'All_Years'){ //filter returns a new array
+    filteredListOfExpenses = props.listOfExpenses.filter(expense => {
       return expense.date.getFullYear().toString() === selectedYear
     })
   }
   else{
-    printListOfExpenses = [...props.listOfExpenses]
+    filteredListOfExpenses = [...props.listOfExpenses]
+  }
+
+  if (filteredListOfExpenses.length === 0){
+    listOfExpenses = <p>Sem gastos</p>;
+  } 
+  else{
+    listOfExpenses = (
+      filteredListOfExpenses.map((expense) => (
+        <ExpenseItem
+          key={expense.id}
+          title={expense.title}
+          amount={expense.amount}
+          date={expense.date}
+        />
+      ))
+    )
   }
 
   return (
 
     <Card className="expenses">
-      <ExpensesFilter defaultYear={selectedYear} onChangeSelect={changeSelectHandler} />
-      {
-        printListOfExpenses.map((expense) => (
-          <ExpenseItem
-            key={expense.id}
-            title={expense.title}
-            amount={expense.amount}
-            date={expense.date}
-          />
-        ))
-      }
+      <ExpensesFilter 
+        defaultYear={selectedYear} 
+        onChangeSelect={changeSelectHandler} />
+      
+      {listOfExpenses}
     </Card>
     
   );
